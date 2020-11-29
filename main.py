@@ -40,4 +40,4 @@ validation_generator = val_datagen.flow_from_directory(
         batch_size=10,
         class_mode='binary')
 
-history = model.fit_generator(train_generator,epochs=5,verbose=1,validation_data=validation_generator)
+history = model.fit(train_generator,epochs=5,verbose=1,validation_data=validation_generator)
