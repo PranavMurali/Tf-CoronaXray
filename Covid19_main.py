@@ -5,9 +5,6 @@ from tensorflow.keras import callbacks
 from tensorflow.keras.optimizers import RMSprop
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
 import matplotlib.pyplot as plt
-from keras.preprocessing.image import load_img
-from keras.preprocessing.image import img_to_array
-from keras.models import load_model
 from keras.callbacks import ModelCheckpoint, EarlyStopping
 
 train = 'F:/CovidXray/Tf-CoronaXray/COVID19/Train'
@@ -29,6 +26,7 @@ model = tf.keras.models.Sequential([
         layers.Dense(512, activation='relu'), 
         layers.Dense(1, activation='sigmoid')
 ])
+model.summary() 
 
 model.compile(optimizer=RMSprop(lr=0.001), loss='binary_crossentropy', metrics=['acc'])
 
@@ -57,7 +55,7 @@ history = model.fit(train_generator,epochs=15,verbose=1,validation_data=validati
 
 
 print(history.history.keys())
-'''
+
 plt.plot(history.history['acc'])
 plt.plot(history.history['val_acc'])
 plt.title('Model Accuracy')
@@ -73,19 +71,4 @@ plt.ylabel('Loss')
 plt.xlabel('Epoch')
 plt.legend(['Train', 'Test'], loc='upper left')
 plt.show()
-'''
 
-def load_image(filename):
-        img = load_img(filename, target_size=(150,150))
-        img = img_to_array(img)
-        img = img.reshape(1,150,150, 3)
-        img = img.astype('float32')
-        img = img -[123.68, 116.779, 103.939]
-        return img
-
-img = load_image('Insert your image path here')
-result = model.predict(img)
-if(result[0]==1):
-        print("COVID-19 positive")
-else:
-        print("COVID-19 negative")
